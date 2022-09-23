@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EntityMovement : MonoBehaviour
 {
+    [SerializeField] Camera _camera;
     [SerializeField] Rigidbody _rb;
     [SerializeField] float _speed;
 
@@ -17,10 +18,15 @@ public class EntityMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        // Move rigidbody
         var calculatedDirection = (_direction * _speed * Time.fixedDeltaTime);
+        calculatedDirection = _camera.transform.TransformDirection(calculatedDirection);
+        
         _rb.MovePosition(_rb.transform.position + calculatedDirection);
 
+        // Look At
+        var lookAtDirection = new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z);
+        _rb.transform.LookAt(_rb.transform.position + lookAtDirection);
     }
 
 

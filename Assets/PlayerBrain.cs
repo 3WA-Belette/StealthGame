@@ -33,5 +33,7 @@ public class PlayerBrain : MonoBehaviour
     private void MoveStop(InputAction.CallbackContext obj)
     {
         _movement.Direction = Vector3.zero;
+
     }
+
 }
