@@ -19,7 +19,6 @@ public class EntityMovement : MonoBehaviour
     {
 
         var calculatedDirection = (_direction * _speed * Time.fixedDeltaTime);
-
         _rb.MovePosition(_rb.transform.position + calculatedDirection);
 
     }
