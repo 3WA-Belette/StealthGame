@@ -92,17 +92,6 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "3098021e-0929-48fb-984d-ff9811a67488",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "CameraLook",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "2D Vector",
                     "id": "39080bdf-fd6b-4b7d-8f0b-79aa062c2f68",
                     "path": "2DVector",
