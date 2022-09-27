@@ -53,7 +53,7 @@ public class EntityMovement : MonoBehaviour
         }
         else
         {
-            _calculatedDirection.y += (Physics.gravity.y/3) * Time.deltaTime;
+            _calculatedDirection.y += -3 * Time.deltaTime;
         }
 
         _controller.Move(_calculatedDirection);

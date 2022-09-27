@@ -227,8 +227,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7239972422540759360, guid: e0ba885e919ea314c9a1d8a61b42c487,
         type: 3}
-      propertyPath: _followCameraOrientation
-      value: 1
+      propertyPath: _camera
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9196954103124232147, guid: e0ba885e919ea314c9a1d8a61b42c487,
         type: 3}
