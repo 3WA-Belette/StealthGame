@@ -16,14 +16,22 @@ public class AnimatorBrain : MonoBehaviour
 
     void Start()
     {
-        _movement.OnMove += _movement_OnMove;
-
+        _movement.OnMove += MovementInjection;
 
     }
 
-    private void _movement_OnMove(Vector3 arg0)
+    private void MovementInjection(Vector3 arg0)
     {
-        _animator.SetFloat(_speedNameFloat, arg0.magnitude);
+        // Create a vector from X and Z
+        var fakeDirection = new Vector3(arg0.x, 0, arg0.z);
+        if(fakeDirection.magnitude > 0.005f)
+        {
+            _animator.SetFloat(_speedNameFloat, 1f);
+        }
+        else
+        {
+            _animator.SetFloat(_speedNameFloat, 0f);
+        }
 
 
     }
