@@ -19,10 +19,10 @@ public class AnimatorBrain : MonoBehaviour
         _movement.OnMove += MovementInjection;
     }
 
-    private void MovementInjection(Vector3 arg0)
+    private void MovementInjection(Vector3 dir)
     {
         // Create a vector from X and Z
-        var fakeDirection = new Vector3(arg0.x, 0, arg0.z);
+        var fakeDirection = new Vector3(dir.x, 0, dir.z);
 
         // Use that for speed
         if(fakeDirection.magnitude > 0.005f)

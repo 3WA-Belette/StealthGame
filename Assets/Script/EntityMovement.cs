@@ -37,7 +37,7 @@ public class EntityMovement : MonoBehaviour
             }
             else
             {
-                // Enemy algo
+
             }
         }
         else // Keep only Y axis for gravity acceleration
