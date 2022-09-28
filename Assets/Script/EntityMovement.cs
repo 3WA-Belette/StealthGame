@@ -12,6 +12,11 @@ public class EntityMovement : MonoBehaviour
     [SerializeField] CharacterController _controller;
     [SerializeField] float _speed;
 
+    [Header("Jump")]
+    [SerializeField] float _gravity = -9.81f;
+    [SerializeField] float _jumpHeight = 1f;
+    [SerializeField] float _mysteriousNumber = -3f;
+
     Vector3 _directionFromBrain;
     Vector3 _calculatedDirection;
 
@@ -22,6 +27,8 @@ public class EntityMovement : MonoBehaviour
         get => _directionFromBrain;
         set => _directionFromBrain = (value).normalized;
     }
+
+    public bool Jump { get; set; }
 
     void Update()
     {
@@ -46,17 +53,25 @@ public class EntityMovement : MonoBehaviour
             _calculatedDirection.z = 0;
         }
 
-        // Apply gravity
-        if(_controller.isGrounded)
+        // Ground check
+        if (_controller.isGrounded)
         {
             _calculatedDirection.y = 0;
         }
-        else
+
+        if (Jump)
         {
-            _calculatedDirection.y += -3 * Time.deltaTime;
+            Jump = false;
+            if(_controller.isGrounded)
+            {
+                _calculatedDirection.y += Mathf.Sqrt(_jumpHeight * _mysteriousNumber * _gravity);
+            }
         }
 
-        _controller.Move(_calculatedDirection);
+        // Apply gravity
+        _calculatedDirection.y += _gravity * Time.deltaTime;
+
+        _controller.Move(_calculatedDirection * Time.deltaTime);
         OnMove?.Invoke(_calculatedDirection);
 
         // Look At

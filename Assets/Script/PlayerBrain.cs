@@ -7,6 +7,7 @@ public class PlayerBrain : MonoBehaviour
 {
     [Header("Inputs")]
     [SerializeField] InputActionReference _moveInput;
+    [SerializeField] InputActionReference _jumpInput;
 
     [Header("Actions")]
     [SerializeField] EntityMovement _movement;
@@ -16,7 +17,15 @@ public class PlayerBrain : MonoBehaviour
         _moveInput.action.started += MoveUpdate;
         _moveInput.action.performed += MoveUpdate;
         _moveInput.action.canceled += MoveStop;
+
+        _jumpInput.action.started += LaunchJump;
     }
+
+    private void LaunchJump(InputAction.CallbackContext obj)
+    {
+        _movement.Jump = true;
+    }
+
     private void OnDestroy()
     {
         _moveInput.action.started -= MoveUpdate;
