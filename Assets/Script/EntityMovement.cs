@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class EntityMovement : MonoBehaviour
 {
@@ -37,14 +38,16 @@ public class EntityMovement : MonoBehaviour
         {
             if (_followCameraOrientation)   // Camera based algo
             {
-                var tmpDirection = (_directionFromBrain * _speed * Time.deltaTime);
-                var forwardForCamera = _camera.transform.TransformDirection(tmpDirection);
+                Vector3 tmpDirection = (_directionFromBrain * _speed * Time.deltaTime);
+                Vector3 forwardForCamera = _camera.transform.TransformDirection(tmpDirection);
                 _calculatedDirection.x = forwardForCamera.x;
                 _calculatedDirection.z = forwardForCamera.z;
             }
             else
             {
-
+                Vector3 tmpDirection = (_directionFromBrain * _speed * Time.deltaTime);
+                _calculatedDirection.x = tmpDirection.x;
+                _calculatedDirection.z = tmpDirection.z;
             }
         }
         else // Keep only Y axis for gravity acceleration
@@ -53,12 +56,12 @@ public class EntityMovement : MonoBehaviour
             _calculatedDirection.z = 0;
         }
 
+        #region Y axis
         // Ground check
         if (_controller.isGrounded)
         {
             _calculatedDirection.y = 0;
         }
-
         if (Jump)
         {
             Jump = false;
@@ -67,9 +70,9 @@ public class EntityMovement : MonoBehaviour
                 _calculatedDirection.y += Mathf.Sqrt(_jumpHeight * _mysteriousNumber * _gravity);
             }
         }
-
         // Apply gravity
         _calculatedDirection.y += _gravity * Time.deltaTime;
+        #endregion
 
         _controller.Move(_calculatedDirection * Time.deltaTime);
         OnMove?.Invoke(_calculatedDirection);
@@ -77,12 +80,12 @@ public class EntityMovement : MonoBehaviour
         // Look At
         if (_followCameraOrientation)   // Follow camera orientation
         {
-            var lookAtDirection = new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z);
-            _controller.transform.LookAt(_controller.transform.position + lookAtDirection);
+            var cameraYRotation = _camera.transform.rotation.eulerAngles.y;
+            _controller.transform.rotation = Quaternion.Euler(0, cameraYRotation, 0);
         }
         else  // Follow direction applied
         {
-
+            _controller.transform.LookAt(_controller.transform.position + new Vector3(_calculatedDirection.x, 0, _calculatedDirection.z));
         }
         
     }

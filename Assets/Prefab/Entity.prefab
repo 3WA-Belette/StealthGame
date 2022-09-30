@@ -109,7 +109,10 @@ MonoBehaviour:
   _followCameraOrientation: 0
   _camera: {fileID: 0}
   _controller: {fileID: 8337799252246132100}
-  _speed: 7
+  _speed: 500
+  _gravity: -75
+  _jumpHeight: 2
+  _mysteriousNumber: -3
 --- !u!1 &9196954103124232147
 GameObject:
   m_ObjectHideFlags: 0
