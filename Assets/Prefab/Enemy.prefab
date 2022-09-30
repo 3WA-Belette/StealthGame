@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8814327687946042996}
   - component: {fileID: 2974959716065704685}
   - component: {fileID: 7335541323382741860}
+  - component: {fileID: 1908179404159191279}
   m_Layer: 0
   m_Name: EntityVision
   m_TagString: Untagged
@@ -58,6 +59,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2540aa88964234699486cec34e4cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &1908179404159191279
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426472946217138628}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3774914414210934390
 GameObject:
   m_ObjectHideFlags: 0

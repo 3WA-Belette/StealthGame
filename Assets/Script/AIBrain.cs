@@ -74,11 +74,13 @@ public class AIBrain : MonoBehaviour
 
     public void Chase()
     {
-
+        // Move to
+        _movement.Direction = _vision.Target.transform.position - transform.position;
     }
 
     public void Attack()
     {
+        _movement.Direction = Vector3.zero;
 
     }
 
