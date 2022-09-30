@@ -36,19 +36,14 @@ public class EntityMovement : MonoBehaviour
         // Move character controller
         if (_directionFromBrain.magnitude > 0.01f)
         {
+            Vector3 tmpDirection = (_directionFromBrain * _speed * Time.deltaTime);
             if (_followCameraOrientation)   // Camera based algo
             {
-                Vector3 tmpDirection = (_directionFromBrain * _speed * Time.deltaTime);
-                Vector3 forwardForCamera = _camera.transform.TransformDirection(tmpDirection);
-                _calculatedDirection.x = forwardForCamera.x;
-                _calculatedDirection.z = forwardForCamera.z;
+                tmpDirection = _camera.transform.TransformDirection(tmpDirection);
             }
-            else
-            {
-                Vector3 tmpDirection = (_directionFromBrain * _speed * Time.deltaTime);
-                _calculatedDirection.x = tmpDirection.x;
-                _calculatedDirection.z = tmpDirection.z;
-            }
+            
+            _calculatedDirection.x = tmpDirection.x;
+            _calculatedDirection.z = tmpDirection.z;
         }
         else // Keep only Y axis for gravity acceleration
         {
@@ -85,7 +80,8 @@ public class EntityMovement : MonoBehaviour
         }
         else  // Follow direction applied
         {
-            _controller.transform.LookAt(_controller.transform.position + new Vector3(_calculatedDirection.x, 0, _calculatedDirection.z));
+            _controller.transform.LookAt(_controller.transform.position + 
+                new Vector3(_calculatedDirection.x, 0, _calculatedDirection.z));
         }
         
     }

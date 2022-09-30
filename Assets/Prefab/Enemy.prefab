@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2540aa88964234699486cec34e4cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mapLayer: Map
 --- !u!135 &1908179404159191279
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -81,6 +82,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4128460727025629824}
+  - component: {fileID: 1542026035}
   m_Layer: 0
   m_Name: Patrol_B
   m_TagString: Untagged
@@ -95,14 +97,40 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3774914414210934390}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.53, y: 0.6, z: 5.24}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.9800018, y: 0.725, z: 7.2200036}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5377454937509554270}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1773428102 &1542026035
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3774914414210934390}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0.98, y: 0.725, z: 7.22}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 246.74, y: 1.735, z: 157.76001}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 0}
+    weight: 1
 --- !u!1 &4207439110673185810
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +141,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1875114092270932691}
   - component: {fileID: 3339144085308243191}
-  - component: {fileID: 4168752435865867249}
   m_Layer: 0
   m_Name: AIBrain
   m_TagString: Untagged
@@ -155,33 +182,11 @@ MonoBehaviour:
   - {fileID: 3497247113872250479}
   - {fileID: 4128460727025629824}
   - {fileID: 406806901661530614}
-  _destinationDistance: 0.5
+  _destinationDistance: 0.7
+  _attackThreshold: 1
   _movement: {fileID: 7427327323060406954}
-  _vision: {fileID: 7335541323382741860}
-  _aiGraph: {fileID: 4168752435865867249}
-  _isInVisionBoolParam: InVision
-  _distanceToTargetFloatParam: DistanceToTarget
+  _detectPlayer: {fileID: 7335541323382741860}
   _radiusGizmos: 0.2
---- !u!95 &4168752435865867249
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4207439110673185810}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f7cc3ded7043f4349916cf8e7e905524, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4737769162096562194
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3497247113872250479}
+  - component: {fileID: 1709697373}
   m_Layer: 0
   m_Name: Patrol_A
   m_TagString: Untagged
@@ -205,14 +211,40 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4737769162096562194}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.43, y: 0.61, z: 2.35}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.3599944, y: 0.725, z: 1.5300012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5377454937509554270}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1773428102 &1709697373
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4737769162096562194}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: -5.36, y: 0.725, z: 1.53}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 240.40001, y: 1.735, z: 152.07}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 0}
+    weight: 1
 --- !u!1 &5906531793572442097
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +288,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 406806901661530614}
+  - component: {fileID: 1838168553}
   m_Layer: 0
   m_Name: Patrol_C
   m_TagString: Untagged
@@ -270,14 +303,40 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8235086631236241217}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.79, y: 1.29, z: 0.55}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.9099946, y: 0.725, z: -0.15000677}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5377454937509554270}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1773428102 &1838168553
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8235086631236241217}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: 2.9099946, y: 0.725, z: -0.15000677}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 248.67, y: 1.735, z: 150.39}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 0}
+    weight: 1
 --- !u!1001 &246192019766713322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -303,17 +362,17 @@ PrefabInstance:
     - target: {fileID: 9196954103124232157, guid: e0ba885e919ea314c9a1d8a61b42c487,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 244.41
       objectReference: {fileID: 0}
     - target: {fileID: 9196954103124232157, guid: e0ba885e919ea314c9a1d8a61b42c487,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.01
       objectReference: {fileID: 0}
     - target: {fileID: 9196954103124232157, guid: e0ba885e919ea314c9a1d8a61b42c487,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 148.6
       objectReference: {fileID: 0}
     - target: {fileID: 9196954103124232157, guid: e0ba885e919ea314c9a1d8a61b42c487,
         type: 3}

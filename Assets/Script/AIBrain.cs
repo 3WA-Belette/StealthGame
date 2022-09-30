@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class AIBrain : MonoBehaviour
 {
+    enum AIState { PATROL = 1,CHASE=2,ATTACK = 3 }
+
     [Header("Base")]
     [SerializeField] Transform _root;
 
@@ -14,20 +16,16 @@ public class AIBrain : MonoBehaviour
     [SerializeField] Transform[] _patrolPath;
     [SerializeField] float _destinationDistance;
 
+    [Header("Chase Conf")]
+    [SerializeField] float _attackThreshold;
+
     [Header("Actions")]
     [SerializeField] EntityMovement _movement;
-    [SerializeField] DetectPlayer _vision;
+    [SerializeField] DetectPlayer _detectPlayer;
 
-    [Header("Animator")]
-    [SerializeField] Animator _aiGraph;
-    [SerializeField, AnimatorParam(nameof(_aiGraph))] string _isInVisionBoolParam;
-    [SerializeField, AnimatorParam(nameof(_aiGraph))] string _distanceToTargetFloatParam;
-
-    int _patrolCurrentIndex;
-    float _patrolDistanceToDestination;
-
-    public Vector3 CurrentDestination => SampledPath[_patrolCurrentIndex];
-    public Vector3[] SampledPath { get; private set; }
+    [ShowNonSerializedField] AIState _internalState;
+    [ShowNonSerializedField] int _patrolCurrentIndex;
+    [ShowNonSerializedField] float _patrolDistanceToDestination;
 
     void Reset()
     {
@@ -36,36 +34,77 @@ public class AIBrain : MonoBehaviour
 
     void Awake()
     {
-        // Prepare a list (version avancée)
-        SampledPath = _patrolPath.Select(i => i.position).ToArray();
+        _internalState = AIState.PATROL;
     }  
 
     void Update()
     {
-        if(_vision.Target != null)
+        //State Machine implementation
+        switch (_internalState)
         {
-            _aiGraph.SetBool(_isInVisionBoolParam, true);
-            _aiGraph.SetFloat(_distanceToTargetFloatParam, Vector3.Distance(transform.position, _vision.Target.transform.position));
-        }
-        else
-        {
-            _aiGraph.SetBool(_isInVisionBoolParam, false);
-            _aiGraph.SetFloat(_distanceToTargetFloatParam, 1000f);
+            case AIState.PATROL:
+                // Actions
+                Patrol();
+
+                // Transitions
+                if(_detectPlayer.Target != null) // Transition to Chase 
+                {
+                    _internalState = AIState.CHASE;
+                }
+                break;
+            case AIState.CHASE:
+                if (_detectPlayer.Target == null)   // Transition to Patrol
+                {
+                    _internalState = AIState.PATROL;
+                    break;
+                }
+
+                // Actions
+                Chase();
+
+                // Transitions
+                var distanceToPlayer = Vector3.Distance(_root.transform.position, _detectPlayer.Target.transform.position);
+                
+                if(distanceToPlayer < _attackThreshold) // Transition to Attack
+                {
+                    _internalState = AIState.ATTACK;
+                }
+                break;
+            case AIState.ATTACK:
+                if (_detectPlayer.Target == null)   // Transition to Patrol
+                {
+                    _internalState = AIState.PATROL;
+                    break;
+                }
+                // Actions
+                Attack();
+
+                // Transitions
+                var distanceToPlayer2 = Vector3.Distance(_root.transform.position, _detectPlayer.Target.transform.position);
+                if (distanceToPlayer2 > _attackThreshold) // Transition to Chase
+                {
+                    _internalState = AIState.CHASE;
+
+                }
+                break;
+            default:
+                break;
         }
     }
 
     public void Patrol()
     {
         // Move to
-        _movement.Direction = CurrentDestination - transform.position;
+        var patrolDestination = _patrolPath[_patrolCurrentIndex].position;
+        _movement.Direction = patrolDestination - transform.position;
 
         // Estimate distance to change destination
-        _patrolDistanceToDestination = Vector3.Distance(transform.position, CurrentDestination);
+        _patrolDistanceToDestination = Vector3.Distance(_root.transform.position, patrolDestination);
         if (_patrolDistanceToDestination < _destinationDistance)
         {
             _patrolCurrentIndex++;
             // On a dépassé la taille du tableau donc on retourne vers l'élément 0
-            if (_patrolCurrentIndex >= SampledPath.Length)
+            if (_patrolCurrentIndex >= _patrolPath.Length)
             {
                 _patrolCurrentIndex = 0;
             }
@@ -75,13 +114,12 @@ public class AIBrain : MonoBehaviour
     public void Chase()
     {
         // Move to
-        _movement.Direction = _vision.Target.transform.position - transform.position;
+        _movement.Direction = _detectPlayer.Target.transform.position - _root.transform.position;
     }
 
     public void Attack()
     {
         _movement.Direction = Vector3.zero;
-
     }
 
     #region EDITOR
@@ -94,14 +132,7 @@ public class AIBrain : MonoBehaviour
         if(Application.isEditor)
         {
             Gizmos.color = Color.blue;
-            if(Application.isPlaying)
-            {
-                DrawTransforms(SampledPath);
-            }
-            else
-            {
-                DrawTransforms(_patrolPath.Select(i => i.position).ToArray());
-            }
+            DrawTransforms(_patrolPath.Select(i => i.position).ToArray());
         }
     }
 
