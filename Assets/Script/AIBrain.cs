@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AIBrain : MonoBehaviour
 {
-    enum AIState { PATROL = 1,CHASE=2,ATTACK = 3 }
+    enum AIState { PATROL = 1,CHASE=2, CATCH = 3 }
 
     [Header("Base")]
     [SerializeField] Transform _root;
@@ -17,10 +18,11 @@ public class AIBrain : MonoBehaviour
     [SerializeField] float _destinationDistance;
 
     [Header("Chase Conf")]
-    [SerializeField] float _attackThreshold;
+    [SerializeField] float _loseDistance;
 
     [Header("Actions")]
-    [SerializeField] EntityMovement _movement;
+    [SerializeField] NavMeshAgent _agent;
+    [SerializeField] EntityLooseGame _lose;
     [SerializeField] DetectPlayer _detectPlayer;
 
     [ShowNonSerializedField] AIState _internalState;
@@ -35,7 +37,8 @@ public class AIBrain : MonoBehaviour
     void Awake()
     {
         _internalState = AIState.PATROL;
-    }  
+        _agent.SetDestination(_patrolPath[_patrolCurrentIndex].position);
+    }
 
     void Update()
     {
@@ -65,23 +68,24 @@ public class AIBrain : MonoBehaviour
                 // Transitions
                 var distanceToPlayer = Vector3.Distance(_root.transform.position, _detectPlayer.Target.transform.position);
                 
-                if(distanceToPlayer < _attackThreshold) // Transition to Attack
+                if(distanceToPlayer < _loseDistance) // Transition to Attack
                 {
-                    _internalState = AIState.ATTACK;
+                    _internalState = AIState.CATCH;
                 }
+
                 break;
-            case AIState.ATTACK:
+            case AIState.CATCH:
                 if (_detectPlayer.Target == null)   // Transition to Patrol
                 {
                     _internalState = AIState.PATROL;
                     break;
                 }
                 // Actions
-                Attack();
+                Catch();
 
                 // Transitions
                 var distanceToPlayer2 = Vector3.Distance(_root.transform.position, _detectPlayer.Target.transform.position);
-                if (distanceToPlayer2 > _attackThreshold) // Transition to Chase
+                if (distanceToPlayer2 > _loseDistance) // Transition to Chase
                 {
                     _internalState = AIState.CHASE;
 
@@ -94,11 +98,8 @@ public class AIBrain : MonoBehaviour
 
     public void Patrol()
     {
-        // Move to
-        var patrolDestination = _patrolPath[_patrolCurrentIndex].position;
-        _movement.Direction = patrolDestination - transform.position;
-
         // Estimate distance to change destination
+        var patrolDestination = _patrolPath[_patrolCurrentIndex].position;
         _patrolDistanceToDestination = Vector3.Distance(_root.transform.position, patrolDestination);
         if (_patrolDistanceToDestination < _destinationDistance)
         {
@@ -108,18 +109,21 @@ public class AIBrain : MonoBehaviour
             {
                 _patrolCurrentIndex = 0;
             }
+
+            _agent.SetDestination(_patrolPath[_patrolCurrentIndex].position);
         }
     }
 
     public void Chase()
     {
         // Move to
-        _movement.Direction = _detectPlayer.Target.transform.position - _root.transform.position;
+        _agent.SetDestination(_detectPlayer.Target.transform.position);
     }
 
-    public void Attack()
+    public void Catch()
     {
-        _movement.Direction = Vector3.zero;
+        _agent.isStopped = true;
+        _lose.Activate();
     }
 
     #region EDITOR
@@ -132,25 +136,21 @@ public class AIBrain : MonoBehaviour
         if(Application.isEditor)
         {
             Gizmos.color = Color.blue;
-            DrawTransforms(_patrolPath.Select(i => i.position).ToArray());
-        }
-    }
+            var pos = _patrolPath.Select(i => i.position).ToArray();
+            // Draw Lines
+            Gizmos.color = Color.yellow;
+            for (int i = 0; i < _patrolPath.Length - 1; i++)
+            {
+                Gizmos.DrawLine(_patrolPath[i].position, _patrolPath[i + 1].position);
+            }
+            Gizmos.DrawLine(_patrolPath[0].position, _patrolPath[pos.Length - 1].position);
 
-    void DrawTransforms(Vector3[] pos)
-    {
-        // Draw Lines
-        Gizmos.color = Color.yellow;
-        for (int i = 0; i < pos.Length - 1; i++)
-        {
-            Gizmos.DrawLine(pos[i], pos[i + 1]);
-        }
-        Gizmos.DrawLine(pos[0], pos[pos.Length - 1]);
-
-        // Then draw spheres
-        Gizmos.color = Color.blue;
-        foreach (var el in pos)
-        {
-            Gizmos.DrawSphere(el, _radiusGizmos);
+            // Then draw spheres
+            Gizmos.color = Color.blue;
+            foreach (var el in pos)
+            {
+                Gizmos.DrawSphere(el, _radiusGizmos);
+            }
         }
     }
 #endif

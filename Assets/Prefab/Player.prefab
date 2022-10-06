@@ -78,7 +78,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveInput: {fileID: 6259942069840162378, guid: 0d948c64a8e95f4469088fe2b72e6792,
     type: 3}
-  _jumpInput: {fileID: 0}
+  _jumpInput: {fileID: 7692486637348154592, guid: 0d948c64a8e95f4469088fe2b72e6792,
+    type: 3}
   _movement: {fileID: 3450624637830885122}
 --- !u!114 &8924801296247525602
 MonoBehaviour:
@@ -183,6 +184,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 990340f805dde6a4991d17222d159a5c, type: 2}
+    - target: {fileID: 9036980633323257398, guid: 2dfbb63c9cdf7504faf4ff26b0581598,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9036980633323257398, guid: 2dfbb63c9cdf7504faf4ff26b0581598,
         type: 3}
       propertyPath: m_ApplyRootMotion

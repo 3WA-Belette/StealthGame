@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,12 @@ public class PlayerBrain : MonoBehaviour
         _moveInput.action.canceled += MoveStop;
 
         _jumpInput.action.started += LaunchJump;
+    }
+
+    internal void StopInput()
+    {
+        _movement.Direction = Vector3.zero;
+        _moveInput.action.actionMap.Disable();
     }
 
     private void LaunchJump(InputAction.CallbackContext obj)
